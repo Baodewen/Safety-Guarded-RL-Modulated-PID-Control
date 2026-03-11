@@ -189,13 +189,4 @@ models/ppo_policy.pt
 - Windows 下可以直接用 `launch_demo.bat`
 - Linux / 服务器环境直接运行 Python 命令即可
 
-## 下一步适合继续加什么
-
-如果你要把这个项目继续推向论文式实验或更强的工程版本，最值得加的是：
-
-- TensorBoard 日志
-- checkpoint 续训
-- 更系统的评估脚本
-- 固定 PID / RL-PID / Safety-Guarded RL-PID 的批量对比实验
-- 更复杂的动态障碍分布
-- 模型导出为更轻量的推理格式
+ 模型导出为更轻量的推理格式
