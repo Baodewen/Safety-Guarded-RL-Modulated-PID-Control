@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Safety-Guarded RL-PID Demo</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Safety-Guarded RL-Modulated PID Control</p>
+        <h1>走廊避障演示台</h1>
+        <p class="subtitle">对比固定 PID、RL 调参和安全兜底后的分层控制行为。</p>
+      </div>
+      <div class="status-group">
+        <div class="status-card">
+          <span>Episode</span>
+          <strong id="episodeStatus">-</strong>
+        </div>
+        <div class="status-card">
+          <span>安全接管</span>
+          <strong id="overrideStatus">-</strong>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="canvas-panel">
+        <div class="toolbar">
+          <label>
+            场景
+            <select id="sceneSelect"></select>
+          </label>
+          <label>
+            策略
+            <select id="policySelect"></select>
+          </label>
+          <label>
+            种子
+            <input id="seedInput" type="number" value="7" min="0" step="1">
+          </label>
+          <label>
+            倍速
+            <input id="speedRange" type="range" min="1" max="8" value="2">
+            <span id="speedLabel">2x</span>
+          </label>
+          <button id="startBtn">开始</button>
+          <button id="pauseBtn">暂停</button>
+          <button id="resetBtn">重置</button>
+        </div>
+        <canvas id="simCanvas" width="1080" height="560"></canvas>
+        <div class="legend">
+          <span><i class="swatch track"></i>轨迹</span>
+          <span><i class="swatch robot"></i>机器人</span>
+          <span><i class="swatch obstacle"></i>静态障碍</span>
+          <span><i class="swatch dynamic"></i>动态障碍</span>
+          <span><i class="swatch safe"></i>安全影响区</span>
+        </div>
+      </section>
+
+      <aside class="side-panel">
+        <section class="metric-grid">
+          <article class="metric-card">
+            <span>速度缩放</span>
+            <strong id="speedScale">-</strong>
+          </article>
+          <article class="metric-card">
+            <span>Kp 修正</span>
+            <strong id="kpScale">-</strong>
+          </article>
+          <article class="metric-card">
+            <span>目标速度</span>
+            <strong id="targetSpeed">-</strong>
+          </article>
+          <article class="metric-card">
+            <span>当前速度</span>
+            <strong id="currentSpeed">-</strong>
+          </article>
+        </section>
+
+        <section class="detail-card">
+          <h2>控制链</h2>
+          <dl class="data-list">
+            <div><dt>RL 来源</dt><dd id="policySource">-</dd></div>
+            <div><dt>目标航向</dt><dd id="targetHeading">-</dd></div>
+            <div><dt>航向误差</dt><dd id="headingError">-</dd></div>
+            <div><dt>PID 原始速度</dt><dd id="rawSpeedCmd">-</dd></div>
+            <div><dt>PID 原始角速度</dt><dd id="rawTurnCmd">-</dd></div>
+            <div><dt>安全后速度</dt><dd id="safeSpeedCmd">-</dd></div>
+            <div><dt>安全后角速度</dt><dd id="safeTurnCmd">-</dd></div>
+            <div><dt>接管原因</dt><dd id="overrideReason">-</dd></div>
+          </dl>
+        </section>
+
+        <section class="detail-card">
+          <h2>局部风险观测</h2>
+          <dl class="data-list">
+            <div><dt>前向距离</dt><dd id="frontDistance">-</dd></div>
+            <div><dt>左侧余量</dt><dd id="leftClearance">-</dd></div>
+            <div><dt>右侧余量</dt><dd id="rightClearance">-</dd></div>
+            <div><dt>中心偏差</dt><dd id="centerOffset">-</dd></div>
+            <div><dt>最近障碍</dt><dd id="nearestObstacle">-</dd></div>
+            <div><dt>边界余量</dt><dd id="boundaryMargin">-</dd></div>
+            <div><dt>接管强度</dt><dd id="overrideStrength">-</dd></div>
+            <div><dt>接管次数</dt><dd id="overrideCount">-</dd></div>
+          </dl>
+        </section>
+
+        <section class="detail-card small">
+          <h2>运行信息</h2>
+          <dl class="data-list">
+            <div><dt>时间</dt><dd id="timeValue">-</dd></div>
+            <div><dt>步数</dt><dd id="stepValue">-</dd></div>
+            <div><dt>进度</dt><dd id="progressValue">-</dd></div>
+            <div><dt>模型</dt><dd id="modelValue">-</dd></div>
+          </dl>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
